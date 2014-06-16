@@ -16,22 +16,19 @@
 # You will need go from http://repo.milford.io.
 #
 # sudo yum -y install rpmdevtools go && rpmdev-setuptree
-# wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.spec -O ~/rpmbuild/SPECS/etcd.spec
-# wget https://github.com/coreos/etcd/releases/download/v0.3.0/etcd-v0.3.0-linux-amd64.tar.gz -O ~/rpmbuild/SOURCES/etcd-v0.3.0-linux-amd64.tar.gz
-# wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.initd -O ~/rpmbuild/SOURCES/etcd.initd
-# wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.sysconfig -O ~/rpmbuild/SOURCES/etcd.sysconfig
-# wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.nofiles.conf -O ~/rpmbuild/SOURCES/etcd.nofiles.conf
-# wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.logrotate -O ~/rpmbuild/SOURCES/etcd.logrotate
-# rpmbuild -bb ~/rpmbuild/SPECS/etcd.spec
+# git clone https://github.com/nmilford/rpm-etcd.git 
+# make
 
 %define debug_package %{nil}
 %define etcd_user  %{name}
 %define etcd_group %{name}
 %define etcd_data  %{_localstatedir}/lib/%{name}
+%define etcd_version %{_version}
+%define etcd_release %{?_release}%{!?_release:1}
 
 Name:      etcd
-Version:   0.3.0
-Release:   1
+Version:   %{etcd_version} 
+Release:   %{etcd_release}
 Summary:   A highly-available key value store for shared configuration and service discovery.
 License:   Apache 2.0
 URL:       https://github.com/coreos/etcd
@@ -122,6 +119,8 @@ fi
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 
 %changelog
+* Mon Jun 16 2014 Gavin Williams <fatmcgav@gmail.com> 0.4.0
+- Updated spec file to allow etcd version and rpm release to be passed in. 
 * Mon Feb 10 2014 Nathan Milford <nathan@milford.io> 0.3.0
 * Sat Dec 28 2013 Nathan Milford <nathan@milford.io> 0.2.0
 * Thu Dec 05 2013 Nathan Milford <nathan@milford.io> 0.2.0-rc1

@@ -1,17 +1,21 @@
-V=0.3.0
+NAME=etcd
+VERSION=0.4.3
+RELEASE=1
+TARBALL=$(NAME)-v$(VERSION)-linux-amd64.tar.gz
+TARDIR=$(NAME)-v$(VERSION)-linux-amd64
 
-all: etcd-$(V)-1.x86_64.rpm
+all: $(NAME)-$(VERSION)-1.x86_64.rpm
 
 SOURCES:
 	ln -s . SOURCES 
 SPECS:
 	ln -s . SPECS 
 
-SOURCES/etcd-v0.3.0-linux-amd64.tar.gz: 
-	spectool --define "_sourcedir `pwd`"  -gf -C ./SOURCES/ etcd.spec 
+SOURCES/$(TARBALL):
+	./spectool --define "_sourcedir `pwd`" --define "_version $(VERSION)" -gf -C ./SOURCES/ $(NAME).spec 
 
-etcd-$(V)-1.x86_64.rpm: SOURCES SPECS SOURCES/etcd-v0.3.0-linux-amd64.tar.gz
-	rpmbuild --define "_sourcedir `pwd`"  -bs ./SPECS/etcd.spec 
-	mock -r epel-6-x86_64 rebuild  /home/sbopr/rpmbuild/SRPMS/etcd-$(V)-1.src.rpm
-	cp  /var/lib/mock/epel-6-x86_64/result/etcd-$(V)-1.x86_64.rpm $@
+$(NAME)-$(VERSION)-$(RELEASE).x86_64.rpm: SOURCES SPECS SOURCES/$(TARBALL)
+	rpmbuild --define "_sourcedir `pwd`" --define "_version $(VERSION)" --define "_release $(RELEASE)" -bs ./SPECS/$(NAME).spec 
+	mock -r epel-6-x86_64 rebuild --define "_version $(VERSION)" --define "_release $(RELEASE)" /home/`whoami`/rpmbuild/SRPMS/$(NAME)-$(VERSION)-1.src.rpm
+	cp /var/lib/mock/epel-6-x86_64/result/$(NAME)-$(VERSION)-1.x86_64.rpm $@
 
