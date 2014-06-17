@@ -50,9 +50,6 @@ ETCD_OUT_FILE="/var/log/etcd/etcd.out"
 #   Valid options are "", "v" or "vv"
 ETCD_LOGGING=""
 
-# Max size of the cluster.
-ETCD_MAXSIZE=9
-
 # Max size of result buffer.
 ETCD_MAXRESULT=1024 
 
@@ -87,7 +84,6 @@ ETCD_OPTS="-name=${ETCD_NODE_NAME} \
           -peer-addr=${RAFT_LISTEN} \
           -data-dir=${ETCD_DATA_DIR} \
           -max-result-buffer=${ETCD_MAXRESULT} \
-          -max-cluster-size=${ETCD_MAXSIZE} \
           -max-retry-attempts=${ETCD_RETRIES}"
 
 if [ x$ETCD_SEEDS != "x" ]; then
